@@ -54,11 +54,4 @@ export class RolesController {
     async removePermission(@Param('id') roleId: string, @Param('permissionId') permissionId: string) {
         return this.rolesService.removePermission(+roleId, +permissionId);
     }
-
-    @Post('seed')
-    @RequireRoles('admin')
-    async seed() {
-        await this.rolesService.seedDefaultRoles();
-        return { message: 'Default roles seeded successfully' };
-    }
 }
