@@ -67,32 +67,4 @@ export class PermissionsService {
 
         return result;
     }
-
-    async seedDefaultPermissions(): Promise<void> {
-        const defaultPermissions = [
-            { name: 'users.create', description: 'បង្កើតអ្នកប្រើប្រាស់' },
-            { name: 'users.read', description: 'មើលអ្នកប្រើប្រាស់' },
-            { name: 'users.update', description: 'កែប្រែអ្នកប្រើប្រាស់' },
-            { name: 'users.delete', description: 'លុបអ្នកប្រើប្រាស់' },
-            { name: 'posts.create', description: 'បង្កើតប្រកាស' },
-            { name: 'posts.read', description: 'មើលប្រកាស' },
-            { name: 'posts.update', description: 'កែប្រែប្រកាស' },
-            { name: 'posts.delete', description: 'លុបប្រកាស' },
-            { name: 'roles.create', description: 'បង្កើត Role' },
-            { name: 'roles.read', description: 'មើល Role' },
-            { name: 'roles.update', description: 'កែប្រែ Role' },
-            { name: 'roles.delete', description: 'លុប Role' },
-            { name: 'permissions.create', description: 'បង្កើត Permission' },
-            { name: 'permissions.read', description: 'មើល Permission' },
-            { name: 'permissions.update', description: 'កែប្រែ Permission' },
-            { name: 'permissions.delete', description: 'លុប Permission' },
-        ];
-
-        for (const permData of defaultPermissions) {
-            const exists = await this.findByName(permData.name);
-            if (!exists) {
-                await this.create(permData);
-            }
-        }
-    }
 }

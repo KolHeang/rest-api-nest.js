@@ -28,7 +28,11 @@
     "migration:show": "npm run typeorm -- migration:show -d src/connection/data-source.ts",
     
     "schema:sync": "npm run typeorm -- schema:sync -d src/connection/data-source.ts",
-    "schema:drop": "npm run typeorm -- schema:drop -d src/connection/data-source.ts"
+    "schema:drop": "npm run typeorm -- schema:drop -d src/connection/data-source.ts",
+
+    "seed": "ts-node -r tsconfig-paths/register src/seeders/seed.ts",
+    "seed:refresh": "npm run migration:revert && npm run migration:run && npm run seed",
+    "setup": "npm run migration:run && npm run seed"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.9",

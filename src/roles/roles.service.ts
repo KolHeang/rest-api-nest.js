@@ -114,41 +114,4 @@ export class RolesService {
 		await this.roleRepository.remove(role);
 	}
 
-	async seedDefaultRoles(): Promise<void> {
-		const allPermissions = await this.permissionRepository.find();
-		
-		const userPermissions = allPermissions.filter(p => 
-			p.name === 'posts.read' || p.name === 'users.read'
-		);
-		
-		const moderatorPermissions = allPermissions.filter(p => 
-			p.name.startsWith('posts.') || p.name === 'users.read'
-		);
-
-		const defaultRoles = [
-			{
-				name: 'admin',
-				description: 'Administrator - សិទ្ធិពេញលេញទាំងអស់',
-				permissions: allPermissions,
-			},
-			{
-				name: 'moderator',
-				description: 'Moderator - គ្រប់គ្រងមាតិកា',
-				permissions: moderatorPermissions,
-			},
-			{
-				name: 'user',
-				description: 'Regular User - អ្នកប្រើប្រាស់ធម្មតា',
-				permissions: userPermissions,
-			},
-		];
-
-		for (const roleData of defaultRoles) {
-			const exists = await this.findByName(roleData.name);
-			if (!exists) {
-				const role = this.roleRepository.create(roleData);
-				await this.roleRepository.save(role);
-			}
-		}
-	}
 }
