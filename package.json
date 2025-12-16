@@ -6,10 +6,9 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "start:dev": "nest start --watch --poll=1000",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
+    "start": "node dist/main.js",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -20,16 +19,13 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
     "typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -d src/connection/data-source.ts",
-    
     "migration:generate": "npm run typeorm -- migration:generate src/migrations/migration -d src/connection/data-source.ts",
     "migration:create": "npm run typeorm -- migration:create src/migrations/",
     "migration:run": "npm run typeorm -- migration:run -d src/connection/data-source.ts",
     "migration:revert": "npm run typeorm -- migration:revert -d src/connection/data-source.ts",
     "migration:show": "npm run typeorm -- migration:show -d src/connection/data-source.ts",
-    
     "schema:sync": "npm run typeorm -- schema:sync -d src/connection/data-source.ts",
     "schema:drop": "npm run typeorm -- schema:drop -d src/connection/data-source.ts",
-
     "seed": "ts-node -r tsconfig-paths/register src/seeders/seed.ts",
     "seed:refresh": "npm run migration:revert && npm run migration:run && npm run seed",
     "setup": "npm run migration:run && npm run seed"
@@ -56,7 +52,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
-    "@nestjs/cli": "^11.0.0",
+    "@nestjs/cli": "^11.0.14",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
     "@types/bcrypt": "^6.0.0",
