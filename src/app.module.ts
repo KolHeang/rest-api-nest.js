@@ -24,10 +24,10 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
             useFactory: (config: ConfigService) => typeOrmConfig(config)
         }),
         
+        UsersModule, // ← MUST be here
+        AuthModule,
         RolesModule,
         PermissionsModule,
-        UsersModule,
-        AuthModule
     ],
 
     // Global Guards

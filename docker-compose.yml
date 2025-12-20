@@ -2,9 +2,8 @@ version: '3.9'
 
 services:
   api:
-    image: node:20-alpine
+    build: .
     container_name: nest-api
-    working_dir: /usr/src/app
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -15,7 +14,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: sh -c "npm ci && npm run start:dev"
+    command: npm run start:dev
     restart: unless-stopped
     networks:
       - nest-network
@@ -32,7 +31,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER}"]
       interval: 5s
       timeout: 5s
       retries: 10

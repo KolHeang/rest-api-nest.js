@@ -6,6 +6,7 @@ import { AssignRolesDto } from './dto/assign-roles.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { PermissionGuard } from 'src/auth/guards/permission.guard';
 import { RequirePermissions } from 'src/auth/decorators/permissions.decorator';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, PermissionGuard)
