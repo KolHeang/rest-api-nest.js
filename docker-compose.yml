@@ -1,29 +1,52 @@
+version: '3.9'
+
 services:
   api:
     image: node:18-alpine
     container_name: nest-api
     working_dir: /usr/src/app
     volumes:
+      # Mount local code for hot-reload
       - .:/usr/src/app
+      # Prevent host node_modules from overriding container's
+      - /usr/src/app/node_modules
     ports:
       - "3000:3000"
     env_file:
       - .env
     depends_on:
-      - db
-    command: sh -c "npm install && npm run start:dev"
+      db:
+        condition: service_healthy
+    command: sh -c "npm ci && npm run start:dev"
+    # Optional: keep container running if command fails
+    restart: unless-stopped
+    networks:
+      - nest-network
 
   db:
-    image: postgres:15
+    image: postgres:15-alpine
     container_name: nest-db
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
+      POSTGRES_PASSWORD: 12345  # CHANGE THIS!
       POSTGRES_DB: nestjs
     ports:
-      - "5432:5432"
+      - "5432:5432"  # Remove in production/staging if not needed
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - nest-network
 
 volumes:
   pgdata:
+
+networks:
+  nest-network:
+    driver: bridge
