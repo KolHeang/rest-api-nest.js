@@ -1,3 +1,4 @@
+import '../polyfills/crypto'
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../app.module';
 import { Permission } from '../permissions/permission.entity';
