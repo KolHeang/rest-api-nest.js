@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from 'typeorm';
 import { Role } from '../roles/roles.entity';
 import { Exclude } from 'class-transformer';
+import { Employee } from 'src/employees/employee.entity';
 
 @Entity('users')
 export class User {
@@ -17,7 +18,7 @@ export class User {
     @Exclude()
     password: string;
 
-    @Column({ default: true })
+    @Column({ default: true, name: 'is_active' })
     isActive: boolean;
 
     @ManyToMany(() => Role, role => role.users, {
@@ -30,6 +31,10 @@ export class User {
         inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' },
     })
     roles: Role[];
+
+    @OneToOne(() => Employee, employee => employee.user, { eager: true, cascade: true , nullable: true })
+    @JoinColumn({ name: 'employee_id' })
+    employee: Employee;
 
     @CreateDateColumn()
     createdAt: Date;

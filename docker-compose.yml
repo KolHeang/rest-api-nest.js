@@ -1,9 +1,11 @@
-version: '3.9'
 
 services:
   api:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     container_name: nest-api
+    command: npm run start:dev
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -11,31 +13,23 @@ services:
       - "3000:3000"
     env_file:
       - .env
+    environment:
+      NODE_ENV: development
     depends_on:
-      db:
-        condition: service_healthy
-    command: npm run start:dev
+      - db
     restart: unless-stopped
     networks:
       - nest-network
 
   db:
-    image: postgres:15-alpine
+    image: postgres:15
     container_name: nest-db
     environment:
+      POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
-    ports:
-      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER}"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    restart: unless-stopped
     networks:
       - nest-network
 

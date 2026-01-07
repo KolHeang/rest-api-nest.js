@@ -8,23 +8,19 @@ export const typeOrmConfig = (config: ConfigService): TypeOrmModuleOptions => ({
     username: config.get<string>('DATABASE_USER'),
     password: config.get<string>('DATABASE_PASSWORD'),
     database: config.get<string>('DATABASE_NAME'),
+
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     
-    // Auto-create tables from entities — ONLY in development
-    synchronize: config.get<boolean>('DATABASE_SYNCHRONIZE', false),
-    
-    // Auto-run pending migrations on app startup (safe alternative to synchronize)
-    migrationsRun: config.get<boolean>('DATABASE_MIGRATIONS_RUN', false),
-    
-    // List of migration files
+    synchronize: config.get('NODE_ENV') !== 'production' && config.get<boolean>('DATABASE_SYNCHRONIZE', false),
+
     migrations: [__dirname + '/../migrations/*{.ts,.js}'],
+    migrationsRun: config.get('NODE_ENV') === 'production',
     
-    // Enable query logging in development
     logging: config.get<string>('NODE_ENV') === 'development',
     
-    // Connection pool
     extra: {
         max: 10,
         min: 2,
     },
+
 });
